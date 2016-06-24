@@ -1,5 +1,5 @@
 get '/json' do
-  json salutation: 'hello'
+  json salutation: 'Hello', instruction: 'Mount your app.rb file to /server/app.rb'
 end
 
 get '/*' do
