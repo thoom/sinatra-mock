@@ -3,7 +3,7 @@ MAINTAINER Z.d. Peacock <zdp@thoomtech.com>
 
 RUN apk add --no-cache --update --virtual .build-deps build-base \
     && apk add --no-cache --update libstdc++ \
-    && gem install -N sinatra thin json \
+    && gem install -N sinatra thin \
     && apk del .build-deps
 
 WORKDIR /server
