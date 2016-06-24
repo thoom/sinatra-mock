@@ -1,0 +1,40 @@
+#! /bin/bash
+
+#
+# options: -p = port
+#          -n = docker container name
+#          -f = Sinatra app file name (expects to be in the correct folder already)
+#
+while getopts ":f:p:n:" opt; do
+  case $opt in
+    f)
+      FILE=$OPTARG
+      ;;
+    p)
+      PORT=$OPTARG
+      ;;
+    n)
+      NAME=$OPTARG
+      ;;
+    \?)
+      echo "Invalid option: -$OPTARG" >&2
+      exit 1
+      ;;
+    :)
+      echo "Option -$OPTARG requires an argument." >&2
+      exit 1
+      ;;
+  esac
+done
+
+if [[ -z $FILE ]] || [[ -z $PORT ]] || [[ -z $NAME ]]; then
+  echo "
+Missing at least one of the following required parameters:
+  -f FILENAME Sinatra app file (assumed to be in the same directory as current)
+  -p PORT     Mapped port
+  -n NAME     Docker container name (automatically prepended with "mock-")
+"
+  exit 1
+fi
+
+docker run -p $PORT:9000 -v $PWD/$FILE:/server/app.rb --name mock-$NAME -d thoom/sinatra-mock
